@@ -54,7 +54,7 @@ void verifica(int numero, int *binario)
     }
     else
     {
-        printf("\n\Entrada invalido!\n");
+        printf("\n\tEntrada invalida!\n");
     }
 }
 
