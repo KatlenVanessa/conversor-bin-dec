@@ -1,5 +1,10 @@
 // Autor: Katlen Vanessa
-// Programa que converte um numero decimal com sinal para binario usando
+// Eletronica Digital
+/*Faça uma codificação em uma linguagem de programação, ao seu critério de escolha,
+que mostre o complemento a 1 e complemento a 2 de determinado número como valor de
+entrada. Além disso, considerando 8 bits, mostre qual o número decimal que o
+complemento a 2, calculado anteriormente, identifica. Mostre visualmente as etapas
+necessárias.*/
 
 #include <stdio.h>
 #include <math.h>
@@ -11,7 +16,7 @@ void imprime(int *binario);
 void verifica(int numero, int *binario);
 void soma_binaria(int numBin1[], int binario[], int *soma);
 void dec_bin(int num, int *binario);
-void bin_dec(int numero, int binario[]);
+void c2_dec(int numero);
 void c1(int *binario);
 void c2(int *binario);
 
@@ -19,7 +24,7 @@ int main()
 {
     int numero, binario[index];
 
-    printf("\n\tDecimal: ");
+    printf("\n\tEntrada: ");
     scanf("%d", &numero);
 
     inicia(binario);
@@ -28,39 +33,45 @@ int main()
     return 0;
 }
 
+// Verifica o valor digitado
 void verifica(int numero, int *binario)
 {
 
-    if ((numero >= -127) || (numero <= 127))
+    if ((numero >= -127) && (numero <= 255))
     {
         if (numero < 0)
         {
             numero = numero * (-1);
         }
-        printf("\n\tEntrada: %d", numero, " \n");
-
         dec_bin(numero, binario);
+        printf("\n\tBinario: \n\t");
+        imprime(binario);
         c1(binario);
+        printf("\n\tC1: \n\t");
+        imprime(binario);
         c2(binario);
-        bin_dec(numero, binario);
+        c2_dec(numero);
     }
     else
     {
-        printf("\n\tNumero invalido!\n");
+        printf("\n\Entrada invalido!\n");
     }
 }
 
+// Realiza a operacao de soma binaria com portas logicas
 void soma_binaria(int numBin1[], int binario[], int *soma)
 {
     int carry = 0;
     int i;
     for (i = 0; i < index; i++)
     {
-        soma[i] = (binario[i] ^ numBin1[i]) ^ carry;
-        carry = (binario[i] && numBin1[i]) || carry && (binario[i] ^ numBin1[i]);
+        soma[i] = (binario[i] ^ numBin1[i]) ^ carry;                              // resultado= (A XOR B) XOR carry-in.
+        carry = (binario[i] && numBin1[i]) || carry && (binario[i] ^ numBin1[i]); // carry-out = A.B + carry-in.(A XOR B)
+        // Circuito: https://www.electronics-tutorials.ws/wp-content/uploads/2018/05/combination-comb20.gif
     }
 }
 
+// Realiza o complemento a 1
 void c1(int *binario)
 {
     int i;
@@ -68,10 +79,9 @@ void c1(int *binario)
     {
         binario[i] = !(binario[i]);
     }
-    printf("\n\tC1: \n\t");
-    imprime(binario);
 }
 
+// Realiza o complemento a 2
 void c2(int *binario)
 {
     int numBin1[index], soma[index];
@@ -83,6 +93,7 @@ void c2(int *binario)
     imprime(soma);
 }
 
+// Realiza a conversao de decimal para binario
 void dec_bin(int num, int *binario)
 {
     int i = 0;
@@ -92,27 +103,32 @@ void dec_bin(int num, int *binario)
         num = num / 2;
         i++;
     }
-    printf("\n\tBinario: \n\t");
-    imprime(binario);
 }
 
-void bin_dec(int numero, int numBin[])
+// Considerando 8 bits, mostra o decimal que o complemento a 2, calculado anteriormente, identifica.
+void c2_dec(int numero)
 {
+    --numero;
+    int numBin[index];
+    inicia(numBin);
+    dec_bin(numero, numBin);
+    c1(numBin);
     int i;
-    double soma;
-    for (i = index - 1; i >= 1; i--)
+    double soma, res;
+    for (i = index - 1; i >= 0; i--)
     {
         if (numBin[i] == 1)
         {
             double pot = i;
-            soma = pow(2.0, pot);
-            soma += soma;
+            soma = pow(2, pot);
+            res += soma;
         }
     }
-
-    printf("\n\tDecimal: %.0f\n", soma, "\n\t");
+    res -= 128;
+    printf("\n\tC2 para decimal: \n\t%.0f", res);
 }
 
+// Inicia um vetor com 0s para guardar o binario
 void inicia(int *binario)
 {
     int i;
@@ -122,6 +138,7 @@ void inicia(int *binario)
     }
 }
 
+// Imprime o binario
 void imprime(int *binario)
 {
     int i;
