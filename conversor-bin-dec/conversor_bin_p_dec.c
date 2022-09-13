@@ -93,7 +93,7 @@ void c2(int *binario)
     imprime(soma);
 }
 
-// Realiza a conversao de decimal para binario
+// Realiza a conversao de decimal para binario de 8 bits
 void dec_bin(int num, int *binario)
 {
     int i = 0;
