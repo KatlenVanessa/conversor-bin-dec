@@ -8,8 +8,8 @@ quantidade de variáveis, ou seja, 2, 4, 8, 16, 32...*/
 #include <stdio.h>
 #include <stdlib.h>
 
-#define linhas 16
-#define colunas 5
+#define linhas 1024
+#define colunas 9
 
 void imprimeTabela(int entradas, int variaveis, int tabela[][colunas]);
 void tabelaVerdade(int variaveis, int entradas, int saidas[], int tabela[][colunas], int *arq2);
